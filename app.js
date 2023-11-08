@@ -6,7 +6,7 @@ const barbie = {
     wardrobe: [],
     wallet: 0
 }
-
+//Careers has no methods that we'll use. Just the constructor
 class Career {
     constructor(name, description, income, id){
         this.name = name;
@@ -15,6 +15,8 @@ class Career {
         this.id = id;
     }
 }
+
+//Array of objects. Names and descriptions. We are going to push the descriptions with actual income.
 
 const careerDescriptions = [
     {
@@ -34,6 +36,7 @@ const careerDescriptions = [
         description: 'talk about stuff on social media and people say wow and i get paid'
     }
 ]
+//income in another array. 
 const careerIncomes = [
  8501,
  18501,
@@ -43,21 +46,22 @@ const careerIncomes = [
  5850,
  6850
 ];
+//Empty array of careers
 const careers = [];
 
-
+//We will have to re-use the logic over and over. So we'll use randomization.
 const randomization = (limit) => {
  return Math.floor(Math.random() * limit)
 }
 
-
+//Use for loop to go through description array, then incomes, then make a new career and push it into an array.
 for (let i = 10 ; i > 0; i--){
  const job = careerDescriptions[randomization(careerDescriptions.length)]
  const income = careerIncomes[randomization(careerIncomes.length)];
  careers.push(new Career(job.name, job.description, income, `${job.name}-${income}` ))
 }
 
-
+//Pick a random career for barbie. barbie.career is given some random career
 barbie.career = careers[randomization(careers.length)]
 
 class Clothing {
@@ -72,15 +76,17 @@ class Clothing {
 }
 
 const birkin = new Clothing('Birkin Bag', 'Hermes', 'purple', 'bag', 'lg', 15470 )
-
+const redBottoms = new Clothing('Red Bottoms', 'Christian Loboutin', 'black', 'shoes', '6', 3000)
 
 
 
 
 // Game Screen
-
+//this element is going to be a representatin for the barbie element
+//getElementById('barbie') is grabbing the barbie element from html div id
 barbie.el = document.getElementById('barbie');
 
+//it takes the barbie.element, to put it into the innterHTML with brand new data.
 barbie.render = () => {
     barbie.el.innerHTML = `
     <h1>${barbie.name} Status</h1>
@@ -101,13 +107,14 @@ barbie.render = () => {
     </div>
 `;
 }
-
+//The render function will drop the function under barbie.render onto the page
 barbie.render()
 
 
 
 const birkinButton = document.getElementById('birkin');
 
+//Telling system to when person clicks on the birlon button, to perform what's in the function.
 birkinButton.addEventListener('click', ()=>{
     if(barbie.wallet >= birkin.price){
         barbie.wardrobe.push(birkin);
@@ -131,3 +138,17 @@ workButton.addEventListener('click', ()=>{
     barbie.render();
 })
 
+const rbButton = document.getElementById('red-bottoms')
+
+rbButton.addEventListener('click', () => {
+    if (barbie.wallet >= redBottoms.price) {
+        barbie.wardrobe.push(redBottoms);
+        barbie.wallet -= redBottoms.price;
+        barbie.render();
+        // WE updated the wardrobe that belongs to barbie so the object was changed
+        // the object control the information that is visible to us on the screen
+        // I want to re-render the content so that i can see the updated information in the browser
+    } else { 
+        alert('Stop trippin you know you aint got it like that');
+    }
+})
