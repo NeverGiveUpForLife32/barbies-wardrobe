@@ -4,6 +4,7 @@ console.log('App is connected');
 const barbie = {
     name: 'Barbie',
     wardrobe: [],
+    transaction: [],
     portfolio: [],
     garage: [],
     wallet: 0
@@ -108,6 +109,8 @@ const tesla = new Vehicle(2024, 'Tesla', 'Model S', 50000)
 // Game Screen
 
 barbie.el = document.getElementById('barbie');
+barbie.el2 = document.getElementById('barbie2')
+
 
 barbie.render = () => {
     barbie.el.innerHTML = `
@@ -153,6 +156,7 @@ barbie.render = () => {
 }
 
 barbie.render();
+
 
 
 
@@ -247,5 +251,24 @@ teslaButton.addEventListener('click', () => {
     // I want to re-render the content so that i can see the updated information in the browser
     } else {
         alert('Stop trippin you know you aint got it like that');
+    }
+})
+
+const sellButton = document.getElementById('sell');
+
+sellButton.addEventListener('click', () => {
+    if(barbie.wardrobe.length === 0) {
+        alert("you don't have anything to sell.")
+    } else {
+        let soldPrice = Math.floor((.7 + Math.random() * 1.3) * barbie.wardrobe[0].price);
+        barbie.wallet += soldPrice
+        barbie.render2 = () => {
+            barbie.el2.innerHTML = `
+            <h1>Transaction History: </h1>
+            <h2>${barbie.name} has sold ${barbie.wardrobe[0].name} for $${soldPrice}</h2>`
+        }
+        barbie.render2();
+        barbie.wardrobe.shift();
+        barbie.render();
     }
 })
