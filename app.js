@@ -5,9 +5,10 @@ const barbie = {
     name: 'Barbie',
     wardrobe: [],
     portfolio: [],
+    garage: [],
     wallet: 0
 }
-//Careers has no methods that we'll use. Just the constructor
+
 class Career {
     constructor(name, description, income, id){
         this.name = name;
@@ -16,8 +17,6 @@ class Career {
         this.id = id;
     }
 }
-
-//Array of objects. Names and descriptions. We are going to push the descriptions with actual income.
 
 const careerDescriptions = [
     {
@@ -35,9 +34,16 @@ const careerDescriptions = [
     {
         name: 'influencer',
         description: 'talk about stuff on social media and people say wow and i get paid'
+    },
+    {
+        name: 'stripper',
+        description: 'well paid entertainment'
+    },
+    {
+        name: 'UX-Designer',
+        description: 'Software developers best friend or enemy'
     }
 ]
-//income in another array. 
 const careerIncomes = [
  8501,
  18501,
@@ -45,24 +51,24 @@ const careerIncomes = [
  3850,
  4850,
  5850,
- 6850
+ 6850,
+ 500
 ];
-//Empty array of careers
 const careers = [];
 
-//We will have to re-use the logic over and over. So we'll use randomization.
+
 const randomization = (limit) => {
  return Math.floor(Math.random() * limit)
 }
 
-//Use for loop to go through description array, then incomes, then make a new career and push it into an array.
+
 for (let i = 10 ; i > 0; i--){
  const job = careerDescriptions[randomization(careerDescriptions.length)]
  const income = careerIncomes[randomization(careerIncomes.length)];
  careers.push(new Career(job.name, job.description, income, `${job.name}-${income}` ))
 }
 
-//Pick a random career for barbie. barbie.career is given some random career
+
 barbie.career = careers[randomization(careers.length)]
 
 class Clothing {
@@ -76,26 +82,33 @@ class Clothing {
     }
 }
 
-class RealEstate{
+class RealEstate {
     constructor(name, cost){
-    this.name = name;
-    this.cost = cost;
+        this.name = name;
+        this.cost = cost;
+    }
 }
+
+class Vehicle {
+    constructor(year, make, model, cost){
+        this.year = year;
+        this.make = make;
+        this.model = model;
+        this.cost = cost;
+    }
 }
 
 const birkin = new Clothing('Birkin Bag', 'Hermes', 'purple', 'bag', 'lg', 15470 )
+const chanel = new Clothing('Chanel bag', 'Chanel', 'black', 'bag', 'med', 35000 )
 const redBottoms = new Clothing('Red Bottoms', 'Christian Loboutin', 'black', 'shoes', '6', 3000)
 const house = new RealEstate('Malibu Condo', 50000)
-
-
+const tesla = new Vehicle(2024, 'Tesla', 'Model S', 50000)
 
 
 // Game Screen
-//this element is going to be a representatin for the barbie element
-//getElementById('barbie') is grabbing the barbie element from html div id
+
 barbie.el = document.getElementById('barbie');
 
-//it takes the barbie.element, to put it into the innterHTML with brand new data.
 barbie.render = () => {
     barbie.el.innerHTML = `
     <h1>${barbie.name} Status</h1>
@@ -123,19 +136,28 @@ barbie.render = () => {
             </li>`
         })).join('')
     }
-    
+    </ul>
+    </div>
+    <div>
+    <h2>Garage contains:</h2>
+    <ul>${
+        barbie.garage.map((car => {
+            return `<li>
+            ${barbie.name} has a ${car.year} ${car.make} ${car.model} worth $${car.cost}.
+            </li>`
+        })).join('')
+    }
     </ul>
     </div>
 `;
 }
-//The render function will drop the function under barbie.render onto the page
-barbie.render()
+
+barbie.render();
 
 
 
 const birkinButton = document.getElementById('birkin');
 
-//Telling system to when person clicks on the birlon button, to perform what's in the function.
 birkinButton.addEventListener('click', ()=>{
     if(barbie.wallet >= birkin.price){
         barbie.wardrobe.push(birkin);
@@ -156,24 +178,44 @@ workButton.addEventListener('click', ()=>{
     barbie.wallet += barbie.career.income; // WE updated the wllet that belongs to barbie so the object was changed
     // the object control the information that is visible to us on the screen
     // I want to re-render the content so that i can see the updated information in the browser
-   
+    
     if(barbie.portfolio.length > 0){
         barbie.wallet += barbie.portfolio.length * 500
+    }
+
+    if(barbie.garage.length > 0){
+        barbie.wallet -= barbie.garage.length * 150
     }
     barbie.render();
 })
 
-const rbButton = document.getElementById('red-bottoms')
+const redBottomButton = document.getElementById('red-bottoms');
 
-rbButton.addEventListener('click', () => {
-    if (barbie.wallet >= redBottoms.price) {
+redBottomButton.addEventListener('click' , () => {
+    if(barbie.wallet >= redBottoms.price){
         barbie.wardrobe.push(redBottoms);
         barbie.wallet -= redBottoms.price;
         barbie.render();
         // WE updated the wardrobe that belongs to barbie so the object was changed
-        // the object control the information that is visible to us on the screen
-        // I want to re-render the content so that i can see the updated information in the browser
-    } else { 
+    // the object control the information that is visible to us on the screen
+    // I want to re-render the content so that i can see the updated information in the browser
+    } else {
+        alert('Stop trippin you know you aint got it like that');
+    }
+
+})
+
+const chanelButton = document.getElementById('chanel');
+
+chanelButton.addEventListener('click' , () => {
+    if(barbie.wallet >= chanel.price){
+        barbie.wardrobe.push(chanel);
+        barbie.wallet -= chanel.price;
+        barbie.render();
+        // WE updated the wardrobe that belongs to barbie so the object was changed
+    // the object control the information that is visible to us on the screen
+    // I want to re-render the content so that i can see the updated information in the browser
+    } else {
         alert('Stop trippin you know you aint got it like that');
     }
 })
@@ -184,6 +226,21 @@ houseButton.addEventListener('click', () => {
     if(barbie.wallet >= house.cost){
         barbie.portfolio.push(house);
         barbie.wallet -= house.cost;
+        barbie.render();
+        // WE updated the wardrobe that belongs to barbie so the object was changed
+    // the object control the information that is visible to us on the screen
+    // I want to re-render the content so that i can see the updated information in the browser
+    } else {
+        alert('Stop trippin you know you aint got it like that');
+    }
+})
+
+const teslaButton = document.getElementById('buyTesla');
+
+teslaButton.addEventListener('click', () => {
+    if(barbie.wallet >= tesla.cost){
+        barbie.garage.push(tesla);
+        barbie.wallet -= tesla.cost;
         barbie.render();
         // WE updated the wardrobe that belongs to barbie so the object was changed
     // the object control the information that is visible to us on the screen
