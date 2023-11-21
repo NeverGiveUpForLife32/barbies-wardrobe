@@ -272,3 +272,73 @@ sellButton.addEventListener('click', () => {
         barbie.render();
     }
 })
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function dropDownFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  
+  // Close the dropdown menu if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      let dropdowns = document.getElementsByClassName("dropdown-content");
+      
+      for (let i = 0; i < dropdowns.length; i++) {
+        let openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+//   ${careers.map(career => {
+//     return (
+//       `<div class="option" value="${career.name}" id="${career.id}">${career.name}</div><button id="${career.id}">Get paid</button>`
+//     )
+//   }).join('')}
+const myDropdown = document.getElementById("myDropdown");
+const createDropDown = () => {
+    myDropdown.innerHTML = `
+    ${careers.map(career => {
+        return (
+            `<div class="option" value="${career.name}" id="career.id}">${career.name}</div>`
+        )
+    }).join('')}
+
+    `
+} 
+barbie.render()
+
+createDropDown()
+
+// Update Barbie's careerproperty when a new option is selected and reflect the change in income.
+
+// const getPaidBtns = document.querySelectorAll('div.option ~ button')
+
+//   getPaidBtns.forEach((button) => {
+//     button.addEventListener('click', (evt) => {
+//       evt.preventDefault()
+//       let currentIdx
+//       currentCareer = careers.find((item, idx) => {
+//         currentIdx = idx
+//         return item.id === evt.target.id
+//       })
+//       careers.splice(currentIdx, 1)
+//       renderFormOptions()
+//       console.log(`${currentCareer.salary}`)
+//     })
+//   })
+
+getPaidBtns.forEach((button) => {
+    button.addEventListener('click', (evt) => {
+      evt.preventDefault()
+      let currentIdx
+      currentCareer = careers.find((item, idx) => {
+        currentIdx = idx
+        return item.id === evt.target.id
+      })
+      careers.splice(currentIdx, 1)
+      renderFormOptions()
+      console.log(`${currentCareer.salary}`)
+    })
+  })
